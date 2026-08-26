@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guia de Bolso: Filamentos 3D — 4ª CRE</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#16232b;
+    --paper:#f4f1e8;
+    --navy:#1c3f5f;
+    --navy-deep:#122a41;
+    --teal:#2f7a76;
+    --amber:#c8791f;
+    --line:#c9c2ac;
+    --grid: rgba(28,63,95,0.07);
+  }
+
+  *{box-sizing:border-box;}
+
+  body{
+    background-color:var(--paper);
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 32px 32px;
+    color:var(--ink);
+    font-family:'Inter', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  h1,h2,h3,.display-font{
+    font-family:'Space Grotesk', sans-serif;
+  }
+
+  .mono{
+    font-family:'JetBrains Mono', monospace;
+  }
+
+  /* ===== HEADER ===== */
+  header.masthead{
+    background: var(--navy-deep);
+    background-image: radial-gradient(circle at 85% 0%, rgba(255,255,255,0.06), transparent 55%);
+    border-bottom: 6px solid var(--amber);
+    color:#f4f1e8;
+    position:relative;
+    overflow:hidden;
+  }
+
+  header.masthead::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background-image: repeating-linear-gradient(0deg, rgba(255,255,255,0.035) 0 1px, transparent 1px 40px),
+                       repeating-linear-gradient(90deg, rgba(255,255,255,0.035) 0 1px, transparent 1px 40px);
+    pointer-events:none;
+  }
+
+  .logo-frame{
+    width:118px;
+    height:118px;
+    border-radius:50%;
+    border:3px solid #f4f1e8;
+    padding:4px;
+    background:#0d2131;
+    flex-shrink:0;
+  }
+  .logo-frame img{
+    width:100%;
+    height:100%;
+    border-radius:50%;
+    object-fit:cover;
+    display:block;
+  }
+
+  .eyebrow{
+    letter-spacing:.18em;
+    font-size:.72rem;
+    text-transform:uppercase;
+    color:#9fc4d4;
+    font-weight:600;
+  }
+
+  header .headline{
+    font-weight:700;
+    font-size:clamp(1.9rem, 4vw, 2.9rem);
+    line-height:1.05;
+    margin:.35rem 0 .6rem;
+  }
+
+  header .subline{
+    color:#c9dbe2;
+    font-size:1.02rem;
+    max-width:640px;
+  }
+
+  .stamp{
+    display:inline-flex;
+    align-items:center;
+    gap:.55rem;
+    border:1.5px solid var(--amber);
+    color:#f4e3c8;
+    padding:.45rem .9rem;
+    border-radius:2px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:.82rem;
+    letter-spacing:.03em;
+    background:rgba(200,121,31,0.08);
+    white-space:normal;
+  }
+  .stamp .dot{
+    width:7px;height:7px;border-radius:50%;background:var(--amber);flex-shrink:0;
+  }
+
+  /* ===== SECTION LABELS ===== */
+  .section-tag{
+    font-family:'JetBrains Mono', monospace;
+    font-size:.75rem;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--teal);
+    font-weight:700;
+    display:flex;
+    align-items:center;
+    gap:.6rem;
+    margin-bottom:.6rem;
+  }
+  .section-tag::after{
+    content:"";
+    flex:1;
+    height:1px;
+    background:var(--line);
+  }
+
+  .lede{
+    max-width:840px;
+    font-size:1.05rem;
+    line-height:1.75;
+    color:#33424a;
+  }
+
+  /* ===== MATERIAL SPEC CARDS ===== */
+  .spec-card{
+    background:#fffdf7;
+    border:1px solid var(--line);
+    border-radius:4px;
+    position:relative;
+    height:100%;
+    padding:1.6rem 1.5rem 1.5rem;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.03);
+    transition:transform .18s ease, box-shadow .18s ease;
+  }
+  .spec-card:hover{
+    transform:translateY(-3px);
+    box-shadow: 0 10px 24px rgba(18,42,65,0.10);
+  }
+  .spec-card::before{
+    content: attr(data-code);
+    position:absolute;
+    top:1.1rem; right:1.2rem;
+    font-family:'JetBrains Mono', monospace;
+    font-size:.72rem;
+    color:var(--line);
+    letter-spacing:.05em;
+  }
+  .spec-card .material-name{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:700;
+    font-size:1.35rem;
+    margin-bottom:.05rem;
+  }
+  .spec-card .material-sub{
+    font-size:.85rem;
+    color:#6b6558;
+    margin-bottom:1rem;
+  }
+  .accent-bar{
+    width:38px; height:5px; border-radius:3px; margin-bottom:.9rem;
+  }
+  .pla .accent-bar{background:var(--teal);}
+  .abs .accent-bar{background:var(--amber);}
+  .petg .accent-bar{background:var(--navy);}
+
+  .gauge-row{
+    display:flex;
+    align-items:center;
+    gap:.7rem;
+    margin:.55rem 0;
+    font-size:.88rem;
+  }
+  .gauge-row .g-label{
+    width:112px;
+    flex-shrink:0;
+    color:#5a5548;
+  }
+  .gauge-track{
+    flex:1;
+    height:7px;
+    border-radius:4px;
+    background:#e9e3d2;
+    position:relative;
+    overflow:hidden;
+  }
+  .gauge-fill{
+    position:absolute; left:0; top:0; height:100%; border-radius:4px;
+  }
+  .pla .gauge-fill{background:var(--teal);}
+  .abs .gauge-fill{background:var(--amber);}
+  .petg .gauge-fill{background:var(--navy);}
+  .gauge-val{
+    font-family:'JetBrains Mono', monospace;
+    font-size:.78rem;
+    width:78px;
+    text-align:right;
+    color:#33424a;
+  }
+
+  .spec-card p.desc{
+    font-size:.93rem;
+    color:#3a3a34;
+    line-height:1.6;
+    margin-top:1.1rem;
+  }
+
+  .tag-pill{
+    display:inline-block;
+    font-size:.72rem;
+    font-family:'JetBrains Mono', monospace;
+    padding:.2rem .55rem;
+    border-radius:2px;
+    margin:.15rem .3rem .15rem 0;
+    border:1px solid var(--line);
+    color:#5a5548;
+  }
+
+  /* ===== COMPARISON TABLE ===== */
+  .table-wrap{
+    background:#fffdf7;
+    border:1px solid var(--line);
+    border-radius:4px;
+    overflow:hidden;
+  }
+  table.spec-table{
+    margin-bottom:0;
+    font-size:.93rem;
+  }
+  table.spec-table thead th{
+    background:var(--navy-deep);
+    color:#f4f1e8;
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600;
+    border:none;
+    padding:.9rem 1rem;
+    vertical-align:middle;
+  }
+  table.spec-table thead th:first-child{color:#9fc4d4; font-family:'JetBrains Mono', monospace; font-weight:500; font-size:.78rem;}
+  table.spec-table tbody td{
+    padding:.85rem 1rem;
+    border-color:#e9e3d2;
+    vertical-align:middle;
+  }
+  table.spec-table tbody td:first-child{
+    font-weight:600;
+    color:var(--navy-deep);
+    width:20%;
+  }
+  table.spec-table tbody tr:nth-child(even){background:#f9f6ec;}
+
+  /* ===== APPLICATIONS ===== */
+  .app-col{
+    border-top:3px solid var(--teal);
+    padding-top:1rem;
+  }
+  .app-col.abs-col{border-top-color:var(--amber);}
+  .app-col.petg-col{border-top-color:var(--navy);}
+  .app-col h3{
+    font-size:1.1rem;
+    font-weight:700;
+    margin-bottom:.9rem;
+  }
+  .app-col ul{
+    list-style:none; padding:0; margin:0;
+  }
+  .app-col li{
+    font-size:.92rem;
+    padding:.4rem 0;
+    border-bottom:1px dashed var(--line);
+    color:#33424a;
+  }
+  .app-col li:last-child{border-bottom:none;}
+
+  /* ===== TIPS ===== */
+  .tip-card{
+    background:#122a41;
+    color:#e7edf0;
+    border-radius:4px;
+    padding:1.3rem 1.4rem;
+    height:100%;
+    border-left:4px solid var(--amber);
+  }
+  .tip-card h4{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:1rem;
+    font-weight:700;
+    color:#f4e3c8;
+    margin-bottom:.5rem;
+  }
+  .tip-card p{
+    font-size:.9rem;
+    color:#c9d6db;
+    line-height:1.6;
+    margin:0;
+  }
+
+  footer{
+    background:var(--navy-deep);
+    color:#9fc4d4;
+    font-size:.85rem;
+  }
+  footer .mono{color:#f4e3c8;}
+
+  @media (max-width: 767px){
+    .logo-frame{width:88px;height:88px;}
+    .stamp{font-size:.74rem;}
+  }
+</style>
+</head>
+<body>
+
+<header class="masthead py-4 py-md-5">
+  <div class="container position-relative">
+    <div class="d-flex flex-column flex-md-row align-items-center align-items-md-start gap-4">
+      <div class="logo-frame">
+        <img src="logo-4cre.png" alt="Logo GET 4ª CRE">
+      </div>
+      <div class="flex-grow-1 text-center text-md-start">
+        <div class="eyebrow">Comunidade de Aprendizagem · Grupo de Estudos em Tecnologia</div>
+        <h1 class="headline">Guia de Bolso: Filamentos 3D</h1>
+        <p class="subline">PLA, ABS e PETG — diferenças, parâmetros de impressão e aplicações ideais para cada material.</p>
+        <div class="mt-3">
+          <span class="stamp"><span class="dot"></span>26/08/2026 — Comunidade de Aprendizagem — 4ª CRE</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="container py-5">
+
+  <!-- INTRO -->
+  <section class="mb-5">
+    <div class="section-tag">Introdução</div>
+    <p class="lede">
+      O universo da impressão 3D oferece uma vasta gama de termoplásticos, e a escolha correta do material é o
+      coração do sucesso de qualquer projeto. Essa decisão afeta diretamente a resistência, a flexibilidade,
+      a durabilidade e o acabamento estético da peça final. Para obter resultados consistentes, economizar
+      tempo e evitar falhas, é essencial entender o comportamento, os requisitos térmicos e as aplicações
+      ideais dos três filamentos mais populares do mercado: <strong>PLA</strong>, <strong>ABS</strong> e <strong>PETG</strong>.
+    </p>
+  </section>
+
+  <!-- PERFIL DOS MATERIAIS -->
+  <section class="mb-5">
+    <div class="section-tag">Perfil dos materiais</div>
+    <div class="row g-4">
+
+      <!-- PLA -->
+      <div class="col-12 col-lg-4">
+        <div class="spec-card pla" data-code="MAT-01">
+          <div class="accent-bar"></div>
+          <div class="material-name">PLA</div>
+          <div class="material-sub">Ácido Polilático — o queridinho dos iniciantes</div>
+
+          <div class="gauge-row">
+            <span class="g-label">Extrusão</span>
+            <div class="gauge-track"><div class="gauge-fill" style="width:38%"></div></div>
+            <span class="gauge-val">190–220°C</span>
+          </div>
+          <div class="gauge-row">
+            <span class="g-label">Mesa</span>
+            <div class="gauge-track"><div class="gauge-fill" style="width:8%"></div></div>
+            <span class="gauge-val">opcional</span>
+          </div>
+          <div class="gauge-row">
+            <span class="g-label">Resist. térmica</span>
+            <div class="gauge-track"><div class="gauge-fill" style="width:25%"></div></div>
+            <span class="gauge-val">~60°C</span>
+          </div>
+
+          <p class="desc">
+            Bioplástico produzido a partir de fontes renováveis (amido de milho ou cana-de-açúcar), biodegradável
+            em compostagem industrial. Não libera odores fortes, é extremamente fácil de imprimir e tem
+            baixíssimo risco de contração. É relativamente frágil sob impacto e amolece a partir de ~60°C.
+          </p>
+          <div class="mt-2">
+            <span class="tag-pill">baixo warping</span>
+            <span class="tag-pill">sem cabine fechada</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ABS -->
+      <div class="col-12 col-lg-4">
+        <div class="spec-card abs" data-code="MAT-02">
+          <div class="accent-bar"></div>
+          <div class="material-name">ABS</div>
+          <div class="material-sub">Acrilonitrila Butadieno Estireno — o veterano robusto</div>
+
+          <div class="gauge-row">
+            <span class="g-label">Extrusão</span>
+            <div class="gauge-track"><div class="gauge-fill" style="width:62%"></div></div>
+            <span class="gauge-val">220–250°C</span>
+          </div>
+          <div class="gauge-row">
+            <span class="g-label">Mesa</span>
+            <div class="gauge-track"><div class="gauge-fill" style="width:78%"></div></div>
+            <span class="gauge-val">100–110°C</span>
+          </div>
+          <div class="gauge-row">
+            <span class="g-label">Resist. térmica</span>
+            <div class="gauge-track"><div class="gauge-fill" style="width:70%"></div></div>
+            <span class="gauge-val">~100°C</span>
+          </div>
+
+          <p class="desc">
+            Polímero derivado do petróleo, conhecido pela tenacidade e alta durabilidade (usado em peças de LEGO
+            e painéis automotivos). Resiste bem a impactos e a altas temperaturas, mas exige mesa aquecida,
+            idealmente cabine fechada, e libera odores fortes e fumos potencialmente nocivos.
+          </p>
+          <div class="mt-2">
+            <span class="tag-pill">alto warping</span>
+            <span class="tag-pill">cabine recomendada</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- PETG -->
+      <div class="col-12 col-lg-4">
+        <div class="spec-card petg" data-code="MAT-03">
+          <div class="accent-bar"></div>
+          <div class="material-name">PETG</div>
+          <div class="material-sub">Polietileno Tereftalato de Glicol — o equilíbrio perfeito</div>
+
+          <div class="gauge-row">
+            <span class="g-label">Extrusão</span>
+            <div class="gauge-track"><div class="gauge-fill" style="width:68%"></div></div>
+            <span class="gauge-val">230–250°C</span>
+          </div>
+          <div class="gauge-row">
+            <span class="g-label">Mesa</span>
+            <div class="gauge-track"><div class="gauge-fill" style="width:55%"></div></div>
+            <span class="gauge-val">70–90°C</span>
+          </div>
+          <div class="gauge-row">
+            <span class="g-label">Resist. térmica</span>
+            <div class="gauge-track"><div class="gauge-fill" style="width:52%"></div></div>
+            <span class="gauge-val">~80°C</span>
+          </div>
+
+          <p class="desc">
+            O "meio-termo inteligente": combina a facilidade e o baixo warping do PLA com a resistência e
+            durabilidade do ABS. Destaca-se pela adesão extraordinária entre camadas (peças herméticas) e
+            costuma ter certificação para contato com alimentos. É higroscópico e propenso a stringing.
+          </p>
+          <div class="mt-2">
+            <span class="tag-pill">baixo warping</span>
+            <span class="tag-pill">alta higroscopia</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- COMPARATIVO -->
+  <section class="mb-5">
+    <div class="section-tag">Comparativo lado a lado</div>
+    <div class="table-wrap table-responsive">
+      <table class="spec-table table align-middle mb-0">
+        <thead>
+          <tr>
+            <th>Propriedade</th>
+            <th>PLA</th>
+            <th>ABS</th>
+            <th>PETG</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Facilidade de impressão</td>
+            <td>Excelente (perdoa erros)</td>
+            <td>Difícil (requer controle)</td>
+            <td>Boa (intermediária)</td>
+          </tr>
+          <tr>
+            <td>Temp. de extrusão</td>
+            <td class="mono">190–220°C</td>
+            <td class="mono">220–250°C</td>
+            <td class="mono">230–250°C</td>
+          </tr>
+          <tr>
+            <td>Temp. de mesa</td>
+            <td>Opcional</td>
+            <td class="mono">100–110°C (obrigatório)</td>
+            <td class="mono">70–90°C (recomendado)</td>
+          </tr>
+          <tr>
+            <td>Resistência à temperatura</td>
+            <td>Baixa (amolece a ~60°C)</td>
+            <td>Alta (suporta até ~100°C)</td>
+            <td>Média (suporta até ~80°C)</td>
+          </tr>
+          <tr>
+            <td>Resistência ao impacto</td>
+            <td>Baixa (frágil)</td>
+            <td>Excelente (tenacidade)</td>
+            <td>Alta (dúctil, leve flexibilidade)</td>
+          </tr>
+          <tr>
+            <td>Risco de warping</td>
+            <td>Muito baixo</td>
+            <td>Alto</td>
+            <td>Baixo</td>
+          </tr>
+          <tr>
+            <td>Cabine fechada?</td>
+            <td>Não (ventilada é ideal)</td>
+            <td>Altamente recomendada</td>
+            <td>Não</td>
+          </tr>
+          <tr>
+            <td>Odor / gases</td>
+            <td>Nenhum / aroma adocicado</td>
+            <td>Forte (estireno)</td>
+            <td>Nenhum perceptível</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- APLICAÇÕES -->
+  <section class="mb-5">
+    <div class="section-tag">Aplicações e projetos recomendados</div>
+    <div class="row g-4">
+      <div class="col-12 col-md-4 app-col">
+        <h3>PLA — Estética e detalhes</h3>
+        <ul>
+          <li>Protótipos rápidos e conceituais</li>
+          <li>Action figures e miniaturas de jogos</li>
+          <li>Peças de decoração (vasos, bustos)</li>
+          <li>Brinquedos simples sem grande impacto</li>
+        </ul>
+      </div>
+      <div class="col-12 col-md-4 app-col abs-col">
+        <h3>ABS — Mecânica e calor</h3>
+        <ul>
+          <li>Engrenagens, dobradiças e engates</li>
+          <li>Cases de eletrônicos (Arduino/Pi)</li>
+          <li>Peças expostas ao calor (motor)</li>
+          <li>Componentes e acessórios automotivos</li>
+        </ul>
+      </div>
+      <div class="col-12 col-md-4 app-col petg-col">
+        <h3>PETG — Versatilidade e uso externo</h3>
+        <ul>
+          <li>Peças funcionais de uso externo (resist. UV)</li>
+          <li>Caixas protetoras e gabinetes</li>
+          <li>Itens de cozinha (filamento certificado)</li>
+          <li>Peças com resistência a água/químicos</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- PREÇOS -->
+  <section class="mb-5">
+    <div class="section-tag">Tabela comparativa de preços (carretéis de 1&nbsp;kg)</div>
+    <div class="table-wrap table-responsive">
+      <table class="spec-table table align-middle mb-0">
+        <thead>
+          <tr>
+            <th>Material</th>
+            <th>Preço médio (marcas tradicionais)</th>
+            <th>Versões econômicas / outlet</th>
+            <th>Versões especiais / alta velocidade (speed)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>ABS</td>
+            <td class="mono">R$ 75,00 a R$ 99,00</td>
+            <td class="mono">R$ 50,00 a R$ 65,00</td>
+            <td class="mono">R$ 110,00 a R$ 130,00</td>
+          </tr>
+          <tr>
+            <td>PETG</td>
+            <td class="mono">R$ 85,00 a R$ 110,00</td>
+            <td class="mono">R$ 70,00 a R$ 79,00</td>
+            <td class="mono">R$ 120,00 a R$ 140,00</td>
+          </tr>
+          <tr>
+            <td>PLA</td>
+            <td class="mono">R$ 95,00 a R$ 120,00</td>
+            <td class="mono">R$ 80,00 a R$ 90,00</td>
+            <td class="mono">R$ 125,00 a R$ 160,00 <span class="d-block d-sm-inline">(Silk, Wood, Carbono)</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- DICAS -->
+  <section>
+    <div class="section-tag">Dicas técnicas cruciais</div>
+    <div class="row g-3">
+      <div class="col-12 col-md-4">
+        <div class="tip-card">
+          <h4>Prevenção de fios no PETG</h4>
+          <p>O PETG é altamente higroscópico. Se notar excesso de fios finos (stringing), seque o filamento e ajuste retração e temperatura do bico.</p>
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="tip-card">
+          <h4>Segurança ao imprimir ABS</h4>
+          <p>O ABS libera estireno. Imprima sempre em ambientes com boa ventilação ou use impressoras com filtros HEPA/carvão ativado.</p>
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="tip-card">
+          <h4>Solidez de peças em PETG</h4>
+          <p>A adesão extraordinária entre camadas facilita a criação de reservatórios e vasos herméticos, mais do que PLA ou ABS.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="py-4 mt-4">
+  <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2 text-center text-md-start">
+    <span>Guia de Bolso: Impressão 3D — PLA · ABS · PETG</span>
+    <span class="mono">26/08/2026 — Comunidade de Aprendizagem — 4ª CRE</span>
+  </div>
+</footer>
+
+</body>
+</html>
